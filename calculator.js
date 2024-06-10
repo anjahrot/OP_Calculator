@@ -41,5 +41,28 @@ const operation = function(a,b,operator) {
     }
 }
 
-console.log(operation(2,3,'*'));
+console.log(operation(5,6,'+'));
+let display = document.querySelector('.display');
+
+document.addEventListener('click', (e) => {
+    let type = e.target.className;
+    if(type === 'number') {
+        if(display.textContent === '0') {
+            display.textContent = e.target.textContent;
+        }
+        else {
+            display.textContent += e.target.textContent;
+        }
+    } else if (type === 'operator') {
+        firstNum = parseInt(display.textContent);
+        display.textContent = '';
+        operator = e.target.textContent;
+    } else if (type === 'equal') {
+        secondNum = parseInt(display.textContent);
+        display.textContent= operation(firstNum, secondNum, operator);
+    }
+});
+
+
+
 

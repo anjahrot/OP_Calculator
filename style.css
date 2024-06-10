@@ -1,4 +1,5 @@
 body {
+    box-sizing: border-box;
     display: flex;
     justify-content: center;
 }
@@ -9,7 +10,9 @@ body {
     justify-content: center; 
     padding: 40px;
     gap: 5px;
+    width: 295px;
 }
+
 
 button {
     width: 70px;
@@ -23,7 +26,7 @@ button {
 }
 
 .display {
-    width: 100%;
+    width: 97%;
     height: 70px;
     display: flex;
     justify-content: flex-end;
@@ -32,5 +35,6 @@ button {
     border-radius: 5px;
     font-size: 32px;
     font-weight: lighter;
+    padding-right: 5px;
 }
 
