@@ -29,12 +29,22 @@ button {
     height: 70px;
 }
 
+
 .operator {
     background-color: orange;
 }
 
-.chosen {
+.operator.chosen {
     background-color: rgb(238, 190, 100);
+}
+
+
+.clear {
+    background-color: rgb(68, 134, 219);
+}
+
+.backspace {
+    background-color: lightskyblue;
 }
 
 .display {
@@ -45,7 +55,7 @@ button {
     align-items: flex-end;
     border: 1px black solid ;
     border-radius: 5px;
-    font-size: 32px;
+    font-size: 40px;
     font-weight: lighter;
     padding-right: 5px;
 }

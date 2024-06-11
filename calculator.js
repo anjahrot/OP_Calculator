@@ -7,15 +7,14 @@ const mult = (a,b) => a*b;
 
 const div = (a,b) => a/b;
 
-/* May not be needed as division by zero in function operation()
-{ 
-    if(b == 0) {
-        return undefined;
-    } else {
-       return a/b;
+
+function formatNumber(num, maxDecimals) {
+    if (Math.floor(num*1000)/1000 !== num) {
+      return num.toFixed(maxDecimals);
     }
-};
-*/
+    return num.toString();
+  }
+
 
 
 //Mathematical operation
@@ -41,7 +40,7 @@ const operation = function(a,b,operator) {
                 return 'div0 ERROR';
               }
             let result = div(a,b);
-            return result.toFixed(6);
+            return formatNumber(result, 8);
             break;
         case '=':
             return a;
@@ -61,11 +60,8 @@ let display = document.querySelector('.display');
 let lastType = '';
 let antOperator = 0;
 
-//Referanse til knappar i html-dokument for å kunne vise kva operator som er valgt
-let buttons = document.querySelectorAll(".operator");
-buttons.forEach(button => {
-    console.log(button.textContent);
-})
+//Variabel som tilordnast referanse til siste knapp som er valgt (av operatortype)
+let currButton;
 
 document.addEventListener('click', (e) => {
     let type = e.target.className;
@@ -77,9 +73,11 @@ document.addEventListener('click', (e) => {
                 lastType = 'number';
             }
             else {
-                if(lastType === 'operator') { //&& operator !== '=') {
+                if(lastType === 'operator' || lastType === 'operator chosen') { 
                     display.textContent = '';
-                }
+                    //Removing highlighted operator once starting to enter new number
+                    currButton.classList.remove("chosen");
+                    }
                 display.textContent += e.target.textContent;
                 lastType = 'number';
             }
@@ -100,8 +98,9 @@ document.addEventListener('click', (e) => {
             //Markerer hvilken operasjon som er valgt, unntatt for =
             if(operator !== '=') {
                 let selector = '#'+ e.target.id;
-                let currbutton = document.querySelector(selector);
-                currbutton.className = "chosen";
+                currButton = document.querySelector(selector);
+                currButton.classList.add("chosen");
+                console.log(currButton.className);
                 }
             break;
         case 'clear':
