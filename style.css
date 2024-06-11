@@ -8,9 +8,12 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: center; 
+    margin-top: 100px;
     padding: 40px;
     gap: 5px;
     width: 295px;
+    background-color: grey;
+    border-radius: 6px;
 }
 
 
@@ -18,11 +21,16 @@ button {
     width: 70px;
     height: 70px;
     font-size: 32px;
+    border-radius: 3px;
 }
 
-#clear {
+.clear {
     width: 145px;
     height: 70px;
+}
+
+.operator {
+    background-color: orange;
 }
 
 .display {
