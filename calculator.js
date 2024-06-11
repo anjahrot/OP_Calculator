@@ -5,16 +5,18 @@ const sub = (a,b) => a - b ;
 
 const mult = (a,b) => a*b;
 
-const div = function(a,b) {
+const div = (a,b) => a/b;
+
+/* May not be needed as division by zero in function operation()
+{ 
     if(b == 0) {
         return undefined;
     } else {
        return a/b;
     }
 };
+*/
 
-//returns infinity when division by zero
-const div2 = (a,b) => a/b;
 
 //Mathematical operation
 //Variables to store the data needed for a mathematical operation
@@ -35,7 +37,11 @@ const operation = function(a,b,operator) {
             return mult(a,b);
             break;
         case '/':
-            return div(a,b);
+            if(b === 0){
+                return 'div0 ERROR';
+              }
+            let result = div(a,b);
+            return result.toFixed(6);
             break;
         case '=':
             return a;
@@ -55,6 +61,11 @@ let display = document.querySelector('.display');
 let lastType = '';
 let antOperator = 0;
 
+//Referanse til knappar i html-dokument for å kunne vise kva operator som er valgt
+let buttons = document.querySelectorAll(".operator");
+buttons.forEach(button => {
+    console.log(button.textContent);
+})
 
 document.addEventListener('click', (e) => {
     let type = e.target.className;
@@ -85,6 +96,12 @@ document.addEventListener('click', (e) => {
                 firstNum = operation(firstNum,secondNum,operator);
                 display.textContent = firstNum;
                 operator = e.target.textContent;
+                }
+            //Markerer hvilken operasjon som er valgt, unntatt for =
+            if(operator !== '=') {
+                let selector = '#'+ e.target.id;
+                let currbutton = document.querySelector(selector);
+                currbutton.className = "chosen";
                 }
             break;
         case 'clear':

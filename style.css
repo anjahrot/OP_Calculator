@@ -33,6 +33,10 @@ button {
     background-color: orange;
 }
 
+.chosen {
+    background-color: rgb(238, 190, 100);
+}
+
 .display {
     width: 97%;
     height: 70px;
