@@ -66,7 +66,7 @@ document.addEventListener('click', (e) => {
                 lastType = 'number';
             }
             else {
-                if(lastType === 'operator' && operator !== '=') {
+                if(lastType === 'operator') { //&& operator !== '=') {
                     display.textContent = '';
                 }
                 display.textContent += e.target.textContent;
@@ -76,7 +76,7 @@ document.addEventListener('click', (e) => {
         case 'operator':
             lastType = 'operator';
             antOperator++;
-            if(antOperator === 1){
+            if(antOperator === 1 || operator === '='){
                 firstNum = parseInt(display.textContent);
                 operator = e.target.textContent;
             }
