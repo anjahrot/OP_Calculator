@@ -26,20 +26,20 @@ let operator;
 const operation = function(a,b,operator) {
     switch (operator) {
         case '+':
-            return formatNumber(add(a,b), 8);
+            return formatNumber(add(a,b), 6);
             break;
         case '-':
-            return formatNumber(sub(a,b), 8);
+            return formatNumber(sub(a,b), 6);
             break;
         case '*':
-            return formatNumber(mult(a,b), 8);
+            return formatNumber(mult(a,b), 6);
             break;
         case '/':
             if(b === 0){
                 return 'div0 ERROR';
               }
             let result = div(a,b);
-            return formatNumber(result, 8);
+            return formatNumber(result, 6);
             break;
         case '=':
             return a;
@@ -61,6 +61,10 @@ let antOperator = 0;
 //Variabel som tilordnast referanse til siste knapp som er valgt (av operatortype)
 let currButton;
 
+//Reference to commabutton, so that it can be disabled/enabled to 
+//prevent several commas in one number. 
+const commabutton = document.querySelector(".comma"); 
+
 //What happens when you press the buttons in the browser:
 document.addEventListener('click', (e) => {
     let type = e.target.className;
@@ -74,6 +78,8 @@ document.addEventListener('click', (e) => {
             else {
                 if(lastType === 'operator' || lastType === 'operator chosen') { 
                     display.textContent = '';
+                    //Allow new float number to be entered
+                    commabutton.disabled = false;
                     //Removing highlighted operator once starting to enter new number
                     currButton.classList.remove("chosen");
                     }
@@ -84,10 +90,12 @@ document.addEventListener('click', (e) => {
         case 'operator':
             lastType = 'operator';
             antOperator++;
+            //First operator, just save first num + operator
             if(antOperator === 1) { 
                 firstNum = parseFloat(display.textContent);
                 operator = e.target.textContent;
             }
+            //Second operator, also do evaluation
             else {
                 secondNum = parseFloat(display.textContent);
                 firstNum = operation(firstNum,secondNum,operator);
@@ -102,12 +110,25 @@ document.addEventListener('click', (e) => {
                 currButton.classList.add("chosen");
                 }
             break;
+        case 'comma':
+            if(display.textContent === '0' || display.textContent === ''){
+                display.textContent = '0.';
+            }
+            else {
+                display.textContent += '.';
+            }
+            commabutton.disabled = true;
+            break;
         case 'clear':
             display.textContent = 0;
             firstNum = 0;
             secondNum = 0;
             operator = '';
             antOperator = 0; 
+            break;
+        case 'backspace' :
+            display.textContent = '';
+            break;
         default:
             break;
     }
