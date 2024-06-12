@@ -84,6 +84,10 @@ document.addEventListener('click', (e) => {
                     currButton.classList.remove("chosen");
                     }
                 display.textContent += e.target.textContent;
+                //Updating firstNum if comma has been added after calculation
+                if(lastType === 'comma' && operator === '='){
+                    firstNum = parseFloat(display.textContent);
+                }
                 lastType = 'number';
             }
             break;
@@ -117,14 +121,22 @@ document.addEventListener('click', (e) => {
             else {
                 display.textContent += '.';
             }
+            lastType = 'comma';
             commabutton.disabled = true;
+            break;
+        case 'sign':
+            let displayNum = parseFloat(display.textContent);
+            displayNum = -displayNum;
+            display.textContent = displayNum;
+            firstNum = displayNum;
             break;
         case 'clear':
             display.textContent = 0;
             firstNum = 0;
             secondNum = 0;
             operator = '';
-            antOperator = 0; 
+            antOperator = 0;
+            commabutton.disabled = false;
             break;
         case 'backspace' :
             display.textContent = '';
