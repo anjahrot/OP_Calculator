@@ -7,7 +7,8 @@ const mult = (a,b) => a*b;
 
 const div = (a,b) => a/b;
 
-
+//Function for limiting number of decimals if necessary,
+//but not having the decimals if it is not needed.
 function formatNumber(num, maxDecimals) {
     if (Math.floor(num*1000)/1000 !== num) {
       return num.toFixed(maxDecimals);
@@ -15,25 +16,23 @@ function formatNumber(num, maxDecimals) {
     return num.toString();
   }
 
-
-
-//Mathematical operation
 //Variables to store the data needed for a mathematical operation
 let firstNum;
 let secondNum;
 let operator;
 
-//Functions for the basic operations
+//Function to run the basic mathematical operations
+//depending on chosen operator
 const operation = function(a,b,operator) {
     switch (operator) {
         case '+':
-            return add(a,b);
+            return formatNumber(add(a,b), 8);
             break;
         case '-':
-            return sub(a,b);
+            return formatNumber(sub(a,b), 8);
             break;
         case '*':
-            return mult(a,b);
+            return formatNumber(mult(a,b), 8);
             break;
         case '/':
             if(b === 0){
@@ -51,18 +50,18 @@ const operation = function(a,b,operator) {
     }
 }
 
-//console.log(operation(5,6,'+'));
 let display = document.querySelector('.display');
 
-//Må ha en variabel som holder orden på hvilken type knapp som var den forrige
-//og en variabel som holder styr på om det er første gang operatorknapp blir brukt
-//slik at vi vet om vi bare skal lagre verdiene eller gjøre en utregning
+//Variable to hold the type of button that was last chosen (operator or number)
+//Variable to hold how many times an operator has been chosen in a calculation
+//Reason: Need to know whether to just store values or do a calculation
 let lastType = '';
 let antOperator = 0;
 
 //Variabel som tilordnast referanse til siste knapp som er valgt (av operatortype)
 let currButton;
 
+//What happens when you press the buttons in the browser:
 document.addEventListener('click', (e) => {
     let type = e.target.className;
   
@@ -85,22 +84,22 @@ document.addEventListener('click', (e) => {
         case 'operator':
             lastType = 'operator';
             antOperator++;
-            if(antOperator === 1 || operator === '='){
-                firstNum = parseInt(display.textContent);
+            if(antOperator === 1) { 
+                firstNum = parseFloat(display.textContent);
                 operator = e.target.textContent;
             }
             else {
-                secondNum = parseInt(display.textContent);
+                secondNum = parseFloat(display.textContent);
                 firstNum = operation(firstNum,secondNum,operator);
                 display.textContent = firstNum;
+                firstNum = parseFloat(firstNum);
                 operator = e.target.textContent;
                 }
-            //Markerer hvilken operasjon som er valgt, unntatt for =
+            //Highlighting chosen operator, except for =
             if(operator !== '=') {
                 let selector = '#'+ e.target.id;
                 currButton = document.querySelector(selector);
                 currButton.classList.add("chosen");
-                console.log(currButton.className);
                 }
             break;
         case 'clear':
