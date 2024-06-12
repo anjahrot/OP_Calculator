@@ -1,4 +1,4 @@
-//Function for basic mathematical operations
+//Functions for basic mathematical operations
 const add = (a,b) => a + b ;
 
 const sub = (a,b) => a - b ;
@@ -44,35 +44,70 @@ const operation = function(a,b,operator) {
         case '=':
             return a;
             break;
+        case 'Enter':
+            return a;
+            break;
         default:
             return 'ERROR';
             break;
     }
 }
 
+//Reference to DOM-element display
 let display = document.querySelector('.display');
 
-//Variable to hold the type of button that was last chosen (operator or number)
-//Variable to hold how many times an operator has been chosen in a calculation
+//Variable to contain the type of button that was last chosen (operator or number)
+//Variable to contain how many times an operator has been chosen in a given calculation
 //Reason: Need to know whether to just store values or do a calculation
 let lastType = '';
 let antOperator = 0;
 
-//Variabel som tilordnast referanse til siste knapp som er valgt (av operatortype)
+//Variable to hold reference to which operator-button is currently chosen
 let currButton;
 
-//Reference to commabutton, so that it can be disabled/enabled to 
-//prevent several commas in one number. 
+//Reference to commabutton in DOM, so that it can be disabled/enabled to 
+//prevent several commas in one number 
 const commabutton = document.querySelector(".comma"); 
 
-//What happens when you press the buttons in the browser:
-document.addEventListener('click', (e) => {
-    let type = e.target.className;
-  
+
+//Eventlisteners for both click and keyboard-events
+document.addEventListener('click', handleEvent);
+document.addEventListener('keydown', handleEvent);
+
+//What happens when you press the buttons in the browser or keys on the keyboard:
+//Setting type (operator,number etc.) and value/content (1,2,+, etc) of key/button pressed differently in the two cases
+function handleEvent(e) {
+    let type = null;
+    let content = null;
+
+    if(e.type === 'click'){
+      type = e.target.className;
+      content = e.target.textContent;
+    }
+    else if (e.type === 'keydown'){
+      if(operations.includes(e.key)){
+        type = 'operator';
+      }
+      else if(numbers.includes(e.key)) {
+        type = 'number';
+      }
+      else if(e.key === ','){
+        type = 'comma';
+      }
+      else if(e.key === 'Escape'){
+        type = 'clear';
+      }
+      else if(e.key === 'Backspace') {
+        type = 'backspace';
+      }
+
+      content = e.key;
+    }
+    
     switch (type) {
         case 'number':
             if(display.textContent === '0') {
-                display.textContent = e.target.textContent;
+                display.textContent = content;
                 lastType = 'number';
             }
             else {
@@ -83,7 +118,7 @@ document.addEventListener('click', (e) => {
                     //Removing highlighted operator once starting to enter new number
                     currButton.classList.remove("chosen");
                     }
-                display.textContent += e.target.textContent;
+                display.textContent += content;
                 //Updating firstNum if comma has been added after calculation
                 if(lastType === 'comma' && operator === '='){
                     firstNum = parseFloat(display.textContent);
@@ -97,7 +132,7 @@ document.addEventListener('click', (e) => {
             //First operator, just save first num + operator
             if(antOperator === 1) { 
                 firstNum = parseFloat(display.textContent);
-                operator = e.target.textContent;
+                operator = content;
             }
             //Second operator, also do evaluation
             else {
@@ -105,12 +140,12 @@ document.addEventListener('click', (e) => {
                 firstNum = operation(firstNum,secondNum,operator);
                 display.textContent = firstNum;
                 firstNum = parseFloat(firstNum);
-                operator = e.target.textContent;
+                operator = content;
                 }
-            //Highlighting chosen operator, except for =
-            if(operator !== '=') {
-                let selector = '#'+ e.target.id;
-                currButton = document.querySelector(selector);
+            //Highlighting chosen operator, except for =/Enter
+            if(operator !== '=' && operator !== 'Enter') {
+                //use content to find the DOM reference to the selected button
+                currButton = [...document.querySelectorAll('button')].find(btn => btn.textContent.includes(content));
                 currButton.classList.add("chosen");
                 }
             break;
@@ -140,13 +175,14 @@ document.addEventListener('click', (e) => {
             break;
         case 'backspace' :
             display.textContent = '';
+            commabutton.disabled = '';
             break;
         default:
             break;
-    }
-   
-});
+    }  
+};
 
-
-
+//Arrays used to assign type to a key that is pressed on the keyboard
+const numbers = ['0','1','2','3','4','5','6','7','8','9'];
+const operations = ['+','-','*','/','=','Enter'];
 
