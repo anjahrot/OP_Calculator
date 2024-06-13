@@ -104,8 +104,6 @@ function handleEvent(e) {
       content = e.key;
      }
     
-    console.log(type,content);
-    
     switch (type) {
         case 'number':
             if(display.textContent === '0') {
@@ -182,7 +180,6 @@ function handleEvent(e) {
         default:
             break;
     }
-   console.log(firstNum);
 };
 
 //Arrays used to assign type to a key that is pressed on the keyboard
