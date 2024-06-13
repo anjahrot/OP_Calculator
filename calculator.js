@@ -5,7 +5,7 @@ const sub = (a,b) => a - b ;
 
 const mult = (a,b) => a*b;
 
-const div = (a,b) => a/b;
+const division = (a,b) => a/b;
 
 //Function for limiting number of decimals if necessary,
 //but not having the decimals if it is not needed.
@@ -38,7 +38,7 @@ const operation = function(a,b,operator) {
             if(b === 0){
                 return 'div0 ERROR';
               }
-            let result = div(a,b);
+            let result = division(a,b);
             return formatNumber(result, 6);
             break;
         case '=':
@@ -71,17 +71,17 @@ const commabutton = document.querySelector(".comma");
 
 
 //Eventlisteners for both click and keyboard-events
-document.addEventListener('click', handleEvent);
-document.addEventListener('keydown', handleEvent);
+document.addEventListener('mousedown',handleEvent);
+document.addEventListener('keydown',handleEvent);
+
 
 //What happens when you press the buttons in the browser or keys on the keyboard:
 //Setting type (operator,number etc.) and value/content (1,2,+, etc) of key/button pressed differently in the two cases
 function handleEvent(e) {
-    let type = null;
-    let content = null;
-
-    if(e.type === 'click'){
-      type = e.target.className;
+           
+    if(e.type === 'mousedown'){
+      e.preventDefault(); //Prevent focus
+      type =  e.target.className;
       content = e.target.textContent;
     }
     else if (e.type === 'keydown'){
@@ -100,9 +100,11 @@ function handleEvent(e) {
       else if(e.key === 'Backspace') {
         type = 'backspace';
       }
-
+      
       content = e.key;
-    }
+     }
+    
+    console.log(type,content);
     
     switch (type) {
         case 'number':
@@ -179,10 +181,14 @@ function handleEvent(e) {
             break;
         default:
             break;
-    }  
+    }
+   console.log(firstNum);
 };
 
 //Arrays used to assign type to a key that is pressed on the keyboard
 const numbers = ['0','1','2','3','4','5','6','7','8','9'];
 const operations = ['+','-','*','/','=','Enter'];
+
+
+
 
